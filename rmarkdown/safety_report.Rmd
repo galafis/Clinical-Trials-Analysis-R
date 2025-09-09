@@ -1,0 +1,20 @@
+---
+title: "Safety Report"
+output: html_document
+params:
+  ae_data: NA
+---
+
+# Relatório de Segurança
+
+Este é um template mínimo de relatório focado em eventos adversos.
+
+## Exemplo de Tabela de Incidência
+
+```{r}
+if (!is.null(params$ae_data)) {
+  table(params$ae_data$treatment, params$ae_data$event)
+} else {
+  cat("Nenhum dado de segurança informado.")
+}
+```
