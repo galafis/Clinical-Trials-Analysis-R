@@ -1,0 +1,31 @@
+---
+title: "Clinical Study Report"
+params:
+  data: NA
+  study_title: "Clinical Trial Example"
+  protocol: "PROTO-000"
+output: html_document
+---
+
+# `r params$study_title`
+**Protocol:** `r params$protocol`
+
+## Sumário de Dados
+
+```{r}
+if (!is.null(params$data)) {
+  knitr::kable(head(params$data), caption = "Exemplo de dados clínicos")
+} else {
+  cat("Nenhum dado informado.")
+}
+```
+
+## Análise Estatística
+
+_Adicione aqui os resultados das funções `compare_groups`, `ancova_efficacy`, etc. Exemplo:_
+
+```{r, eval=FALSE}
+# Exemplo de uso
+# test <- compare_groups(params$data, "treatment", "outcome")
+# print(test$resultado)
+```
