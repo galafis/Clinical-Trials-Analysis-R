@@ -1,0 +1,310 @@
+---
+title: "Relatório Estatístico de Ensaio Clínico"
+subtitle: "Análise Estatística Completa"
+author: "Equipe de Biostatística"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: flatly
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    number_sections: true
+    code_folding: hide
+    df_print: paged
+  pdf_document:
+    toc: true
+    number_sections: true
+params:
+  study_title: "Estudo Clínico Fase III"
+  protocol_number: "PROTO-2025-001"
+  analysis_date: !r Sys.Date()
+  data_cutoff: !r Sys.Date()
+---
+
+```{r setup, include=FALSE}
+# Configuração global dos chunks
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 10,
+  fig.height = 8,
+  dpi = 300
+)
+
+# Carregamento das bibliotecas
+library(dplyr)
+library(ggplot2)
+library(knitr)
+library(DT)
+library(plotly)
+library(survival)
+library(survminer)
+library(emmeans)
+library(broom)
+```
+
+# Sumário Executivo
+
+## Informações do Estudo
+
+**Título:** `r params$study_title`  
+**Protocolo:** `r params$protocol_number`  
+**Data da Análise:** `r format(params$analysis_date, '%d de %B de %Y')`  
+**Data de Corte dos Dados:** `r format(params$data_cutoff, '%d de %B de %Y')`
+
+## Principais Resultados
+
+```{r executive-summary}
+# Placeholder para resumo executivo dos resultados principais
+cat("Este relatório apresenta a análise estatística completa do estudo clínico.\n")
+cat("Os principais endpoints de eficácia e segurança são analisados conforme\n")
+cat("o plano de análise estatística definido no protocolo.")
+```
+
+# Metodologia Estatística
+
+## População de Análise
+
+```{r analysis-populations}
+# Definição das populações de análise
+populations <- data.frame(
+  Populacao = c("ITT (Intent-to-Treat)", "PP (Per-Protocol)", "Segurança"),
+  Definicao = c(
+    "Todos os pacientes randomizados",
+    "Pacientes que completaram o estudo conforme protocolo",
+    "Todos os pacientes que receberam pelo menos uma dose"
+  ),
+  N = c("N = XXX", "N = XXX", "N = XXX")
+)
+
+kable(populations, caption = "Populações de Análise")
+```
+
+## Métodos Estatísticos Utilizados
+
+### Análise de Eficácia
+- **Endpoint Primário:** Teste t de Student ou teste de Wilcoxon (conforme normalidade)
+- **ANCOVA:** Análise de covariância ajustada para fatores de estratificação
+- **Tamanho de Efeito:** Cálculo de Cohen's d ou Hedges' g
+
+### Análise de Segurança
+- **Eventos Adversos:** Teste exato de Fisher para comparação entre grupos
+- **Incidência:** Cálculo de taxas e intervalos de confiança 95%
+
+```{r statistical-methods}
+# Configurações estatísticas
+config <- list(
+  alpha = 0.05,
+  power = 0.80,
+  sides = "two-sided",
+  ci_level = 0.95
+)
+
+cat("Nível de significância (α):", config$alpha, "\n")
+cat("Poder estatístico:", config$power, "\n")
+cat("Teste:", config$sides, "\n")
+cat("Intervalo de confiança:", paste0(config$ci_level * 100, "%"), "\n")
+```
+
+# Características dos Pacientes
+
+## Demografia Basal
+
+```{r demographics}
+# Placeholder para análise demográfica
+# Exemplo de estrutura de dados
+set.seed(123)
+demographics_example <- data.frame(
+  Caracteristica = c("Idade (anos)", "Sexo Masculino", "IMC (kg/m²)"),
+  Tratamento_N = c("65.3 ± 12.4", "45 (60.0%)", "26.8 ± 4.2"),
+  Controle_N = c("63.8 ± 11.9", "38 (52.1%)", "27.2 ± 3.8"),
+  P_valor = c("0.523", "0.392", "0.641")
+)
+
+kable(demographics_example, 
+      caption = "Características Demográficas Basais",
+      col.names = c("Característica", "Tratamento (N=75)", "Controle (N=73)", "P-valor"))
+```
+
+## Histórico Médico
+
+```{r medical-history}
+cat("Análise do histórico médico e comorbidades dos pacientes incluídos no estudo.\n")
+cat("Esta seção deve incluir análises relevantes de acordo com o protocolo específico.")
+```
+
+# Análise de Eficácia
+
+## Endpoint Primário
+
+```{r primary-endpoint}
+# Placeholder para análise do endpoint primário
+cat("=== ANÁLISE DO ENDPOINT PRIMÁRIO ===\n\n")
+cat("Definição: [Descrever o endpoint primário específico]\n")
+cat("Método de Análise: [Especificar método estatístico]\n")
+cat("População: ITT (Intent-to-Treat)\n\n")
+
+# Exemplo de estrutura de resultados
+primary_results <- data.frame(
+  Grupo = c("Tratamento", "Controle"),
+  N = c(75, 73),
+  Media = c("XX.X ± X.X", "XX.X ± X.X"),
+  Mediana = c("XX.X (XX.X-XX.X)", "XX.X (XX.X-XX.X)")
+)
+
+kable(primary_results, caption = "Resultados do Endpoint Primário")
+```
+
+### Teste Estatístico
+
+```{r primary-test, echo=TRUE}
+# Exemplo de código para teste estatístico
+# t.test(grupo_tratamento, grupo_controle)
+# Resultado: p-valor = X.XXX
+cat("P-valor:", "0.XXX", "\n")
+cat("Intervalo de Confiança 95%:", "(X.XX, X.XX)", "\n")
+cat("Tamanho do Efeito (Cohen's d):", "X.XX", "\n")
+```
+
+## Endpoints Secundários
+
+```{r secondary-endpoints}
+cat("=== ANÁLISE DOS ENDPOINTS SECUNDÁRIOS ===\n\n")
+cat("Esta seção apresenta os resultados dos endpoints secundários\n")
+cat("definidos no protocolo, incluindo análises de subgrupo quando aplicável.")
+```
+
+### Análise de Subgrupos
+
+```{r subgroup-analysis}
+# Placeholder para análise de subgrupos
+subgroups <- c("Idade (<65 vs ≥65 anos)", "Sexo (M vs F)", "Severidade basal")
+
+for(subgroup in subgroups) {
+  cat("-", subgroup, "\n")
+}
+```
+
+# Análise de Segurança
+
+## Resumo de Segurança
+
+```{r safety-overview}
+cat("=== RESUMO DE SEGURANÇA ===\n\n")
+cat("Esta seção apresenta a análise completa de segurança,\n")
+cat("incluindo todos os eventos adversos reportados durante o estudo.")
+```
+
+## Eventos Adversos
+
+```{r adverse-events}
+# Exemplo de estrutura para eventos adversos
+ae_summary <- data.frame(
+  Sistema_Organico = c("Gastrointestinal", "Sistema Nervoso", "Pele e Tecido Subcutâneo"),
+  Tratamento_n = c("15 (20.0%)", "8 (10.7%)", "5 (6.7%)"),
+  Controle_n = c("12 (16.4%)", "10 (13.7%)", "3 (4.1%)"),
+  P_valor = c("0.567", "0.591", "0.721")
+)
+
+kable(ae_summary, 
+      caption = "Eventos Adversos por Sistema Orgânico",
+      col.names = c("Sistema Orgânico", "Tratamento (N=75)", "Controle (N=73)", "P-valor"))
+```
+
+### Eventos Adversos Graves (SAE)
+
+```{r serious-adverse-events}
+cat("Análise detalhada dos eventos adversos graves (SAE)\n")
+cat("reportados durante o estudo, incluindo relação de causalidade.")
+```
+
+# Análise de Sobrevivência (se aplicável)
+
+```{r survival-analysis}
+cat("=== ANÁLISE DE SOBREVIVÊNCIA ===\n\n")
+cat("Esta seção está incluída apenas se relevante para o tipo de estudo.\n")
+cat("Inclui análises de Kaplan-Meier e modelos de Cox quando apropriados.")
+```
+
+# Discussão Estatística
+
+## Interpretação dos Resultados
+
+```{r interpretation}
+cat("=== INTERPRETAÇÃO DOS RESULTADOS ===\n\n")
+cat("Esta seção fornece interpretação estatística dos resultados principais,\n")
+cat("incluindo considerações sobre significância clínica vs. significância estatística.")
+```
+
+## Limitações da Análise
+
+```{r limitations}
+limitations <- c(
+  "Tamanho amostral calculado para endpoint primário",
+  "Análises de subgrupo são exploratórias",
+  "Dados faltantes tratados conforme plano de análise"
+)
+
+cat("Limitações identificadas:\n")
+for(i in seq_along(limitations)) {
+  cat(paste0(i, ". ", limitations[i], "\n"))
+}
+```
+
+# Conclusões
+
+```{r conclusions}
+cat("=== CONCLUSÕES ESTATÍSTICAS ===\n\n")
+cat("Com base nas análises realizadas conforme o plano de análise estatística:\n\n")
+cat("1. [Conclusão sobre o endpoint primário]\n")
+cat("2. [Conclusões sobre endpoints secundários]\n")
+cat("3. [Conclusões sobre segurança]\n\n")
+cat("As conclusões finais do estudo devem considerar tanto os resultados\n")
+cat("estatísticos quanto a relevância clínica dos achados.")
+```
+
+# Apêndices
+
+## Código R Utilizado
+
+```{r appendix-code, echo=TRUE, eval=FALSE}
+# Este apêndice pode incluir código R adicional usado nas análises
+# Exemplos de funções personalizadas ou análises complementares
+
+# Função exemplo para calcular estatísticas descritivas
+descriptive_stats <- function(x, group = NULL) {
+  if(is.null(group)) {
+    data.frame(
+      N = length(x[!is.na(x)]),
+      Mean = round(mean(x, na.rm = TRUE), 2),
+      SD = round(sd(x, na.rm = TRUE), 2),
+      Median = round(median(x, na.rm = TRUE), 2),
+      IQR = paste0("(", round(quantile(x, 0.25, na.rm = TRUE), 2), 
+                   "-", round(quantile(x, 0.75, na.rm = TRUE), 2), ")")
+    )
+  } else {
+    # Análise por grupo
+    tapply(x, group, function(xi) {
+      list(
+        N = length(xi[!is.na(xi)]),
+        Mean = round(mean(xi, na.rm = TRUE), 2),
+        SD = round(sd(xi, na.rm = TRUE), 2)
+      )
+    })
+  }
+}
+```
+
+## Informações da Sessão
+
+```{r session-info, echo=TRUE}
+# Informações sobre a versão do R e pacotes utilizados
+sessionInfo()
+```
+
+---
+
+*Relatório gerado automaticamente em `r format(Sys.time(), '%d de %B de %Y às %H:%M')`*  
+*Versão do template: 1.0*
